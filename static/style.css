@@ -313,12 +313,6 @@ body {
 
 }
 
-.cipher-option.bonus label {
-
-    border-style: dashed;
-
-}
-
 .cipher-icon {
 
     min-width: 38px;
@@ -913,10 +907,10 @@ footer strong {
 
 
 /* KEY INPUT - TAMBAHAN */
-
 .key-affine {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .key-affine input {
@@ -927,6 +921,7 @@ footer strong {
     font-family: inherit;
     font-size: 13px;
     outline: none;
+    background: white;
 }
 
 .key-affine input:focus {
