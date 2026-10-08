@@ -1,14 +1,6 @@
 # ============================================================
-# IMPLEMENTASI PLAYFAIR CIPHER
+# IMPLEMENTASI PLAYFAIR CIPHER (MODUL)
 # ============================================================
-
-GROUP_NAME = "The cipherlings"
-
-GROUP_MEMBERS = [
-    "Ririn Rahma Arifa - 237006171",
-    "Tia Amelia - 237006162",
-    "Shanty Dwi Septiani - 237006161",
-]
 
 
 # ------------------------------------------------------------
@@ -25,19 +17,7 @@ def create_matrix(key):
         if char.isalpha() and char not in letters:
             letters.append(char)
 
-    return [letters[i : i + 5] for i in range(0, 25, 5)]
-
-
-# ------------------------------------------------------------
-# Menampilkan matriks
-# ------------------------------------------------------------
-def print_matrix(matrix):
-    print("\nMatriks Playfair:")
-    print("+---+---+---+---+---+")
-
-    for row in matrix:
-        print("| " + " | ".join(row) + " |")
-        print("+---+---+---+---+---+")
+    return [letters[i:i + 5] for i in range(0, 25, 5)]
 
 
 # ------------------------------------------------------------
@@ -129,6 +109,9 @@ def decrypt_pair(pair, matrix):
 # Enkripsi utama
 # ------------------------------------------------------------
 def playfair_encrypt(plaintext, key):
+    if not key:
+        raise ValueError("Key tidak boleh kosong.")
+
     matrix = create_matrix(key)
     pairs = prepare_text(plaintext)
 
@@ -144,92 +127,21 @@ def playfair_encrypt(plaintext, key):
 # Dekripsi utama
 # ------------------------------------------------------------
 def playfair_decrypt(ciphertext, key):
+    if not key:
+        raise ValueError("Key tidak boleh kosong.")
+
     matrix = create_matrix(key)
 
     ciphertext = ciphertext.upper()
     ciphertext = "".join(char for char in ciphertext if char.isalpha())
 
+    if len(ciphertext) % 2 != 0:
+        raise ValueError("Panjang ciphertext harus genap.")
+
     plaintext = ""
 
     for i in range(0, len(ciphertext), 2):
-        pair = ciphertext[i : i + 2]
+        pair = ciphertext[i:i + 2]
         plaintext += decrypt_pair(pair, matrix)
 
     return plaintext
-
-
-# ------------------------------------------------------------
-# DEMO PROGRAM
-# ------------------------------------------------------------
-def main():
-
-    print("=" * 60)
-    print("IMPLEMENTASI PLAYFAIR CIPHER")
-    print("=" * 60)
-
-    print(f"\nNama Kelompok : {GROUP_NAME}")
-
-    print("Anggota:")
-    for member in GROUP_MEMBERS:
-        print(f"- {member}")
-
-    # Data pengujian
-    plaintext = "HARI INI"
-    key = "KUNCI"
-
-    print("\n" + "-" * 60)
-    print("DEMO UJI PLAYFAIR CIPHER")
-    print("-" * 60)
-
-    print(f"Plaintext       : {plaintext}")
-    print(f"Key             : {key}")
-
-    # Membuat matriks
-    matrix = create_matrix(key)
-
-    print_matrix(matrix)
-
-    # Menampilkan pasangan huruf
-    pairs = prepare_text(plaintext)
-
-    print(f"\nPasangan Huruf  : {' '.join(pairs)}")
-
-    # Enkripsi
-    ciphertext = playfair_encrypt(plaintext, key)
-
-    print(f"Ciphertext      : {ciphertext}")
-
-    # Dekripsi
-    decrypted = playfair_decrypt(ciphertext, key)
-
-    print(f"Hasil Dekripsi  : {decrypted}")
-
-    # --------------------------------------------------------
-    # Verifikasi
-    # --------------------------------------------------------
-
-    normalized_plaintext = plaintext.upper().replace("J", "I").replace(" ", "")
-
-    # Hapus X padding di bagian akhir
-    decrypted_clean = decrypted.rstrip("X")
-
-    print("\n" + "-" * 60)
-
-    print(f"Plaintext Normal : {normalized_plaintext}")
-    print(f"Dekripsi Bersih  : {decrypted_clean}")
-
-    if decrypted_clean == normalized_plaintext:
-        print("STATUS           : BERHASIL")
-        print("Enkripsi dan dekripsi berjalan dengan benar.")
-    else:
-        print("STATUS           : GAGAL")
-        print("Hasil dekripsi tidak sama dengan plaintext.")
-
-    print("-" * 60)
-
-
-# ------------------------------------------------------------
-# Menjalankan program
-# ------------------------------------------------------------
-if __name__ == "__main__":
-    main()

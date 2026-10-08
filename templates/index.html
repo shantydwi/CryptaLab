@@ -463,194 +463,88 @@
 
     <!-- ================= JAVASCRIPT ================= -->
     <script>
+    function toggleKey() {
+        const input = document.getElementById("keyInput");
+        input.type = (input.type === "password") ? "text" : "password";
+    }
 
-        function toggleKey() {
-
-            const input =
-                document.getElementById("keyInput");
-
-            if (input.type === "password") {
-
-                input.type = "text";
-
-            } else {
-
-                input.type = "password";
-
-            }
-
-        }
-
-
-        function changeTab(type, button) {
-
-            document
-                .querySelectorAll(".tab")
-                .forEach(tab =>
-                    tab.classList.remove("active")
-                );
-
-            button.classList.add("active");
-
-            const output =
-                document.getElementById("outputText");
-
-            if (type === "base64") {
-
-                output.placeholder =
-                    "Hasil dalam format Base64 akan ditampilkan di sini...";
-
-            } else {
-
-                output.placeholder =
-                    "Hasil akan ditampilkan di sini...";
-
-            }
-
-        }
-
-
-        function showDemo(action) {
-
-            /*
-                Algoritma enkripsi dan dekripsi belum berlaku
-            */
-
-            const output =
-                document.getElementById("outputText");
-
-            const status =
-                document.getElementById("outputStatus");
-
-            const input =
-                document.getElementById("messageInput").value;
-
-            if (input.trim() === "") {
-
-                output.value = "";
-
-                status.innerText =
-                    "Silakan masukkan pesan terlebih dahulu.";
-
-                return;
-
-            }
-
-
-            if (action === "encrypt") {
-
-                output.value =
-                    "[HASIL ENKRIPSI AKAN DITAMPILKAN DI SINI]";
-
-                status.innerText =
-                    "Enkripsi siap diproses";
-
-            } else {
-
-                output.value =
-                    "[HASIL DEKRIPSI AKAN DITAMPILKAN DI SINI]";
-
-                status.innerText =
-                    "Dekripsi siap diproses";
-
-            }
-
-        }
-
-
-        function downloadResult() {
-
-            const output =
-                document.getElementById("outputText").value;
-
-            if (!output) {
-
-                alert(
-                    "Tidak ada hasil yang dapat diunduh."
-                );
-
-                return;
-
-            }
-
-            const blob =
-                new Blob(
-                    [output],
-                    {
-                        type: "application/octet-stream"
-                    }
-                );
-
-            const url =
-                URL.createObjectURL(blob);
-
-            const a =
-                document.createElement("a");
-
-            a.href = url;
-
-            a.download = "ciphertext.dat";
-
-            a.click();
-
-            URL.revokeObjectURL(url);
-
-        }
-
-
-        // Penghitung jumlah karakter
-
-        const output =
-            document.getElementById("outputText");
-
-        output.addEventListener(
-            "input",
-            function () {
-
-                const info =
-                    document.querySelector(
-                        ".output-info span:last-child"
-                    );
-
-                info.innerText =
-                    `${this.value.length} karakter`;
-
-            }
+    function changeTab(type, button) {
+        document.querySelectorAll(".tab").forEach(tab =>
+            tab.classList.remove("active")
         );
+        button.classList.add("active");
+    }
 
+    async function showDemo(action) {
+        const output = document.getElementById("outputText");
+        const status = document.getElementById("outputStatus");
+        const input  = document.getElementById("messageInput").value;
+        const key    = document.getElementById("keyInput").value;
 
-        // Efek pilihan algoritma
+        const algorithm = document.querySelector(
+            'input[name="cipher"]:checked'
+        )?.id;
 
-        document
-            .querySelectorAll(
-                'input[name="cipher"]'
-            )
-            .forEach(input => {
+        if (input.trim() === "") {
+            output.value = "";
+            status.innerText = "Silakan masukkan pesan terlebih dahulu.";
+            return;
+        }
 
-                input.addEventListener(
-                    "change",
-                    function () {
+        status.innerText = "Memproses...";
 
-                        document
-                            .querySelectorAll(
-                                ".cipher-option"
-                            )
-                            .forEach(option =>
-                                option.classList.remove(
-                                    "active"
-                                )
-                            );
-
-                        this
-                            .closest(".cipher-option")
-                            .classList.add("active");
-
-                    }
-                );
-
+        try {
+            const response = await fetch("/process", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    algorithm: algorithm,
+                    mode: action,
+                    text: input,
+                    key: key
+                })
             });
 
-    </script>
+            const data = await response.json();
+
+            if (data.error) {
+                output.value = "";
+                status.innerText = "Error: " + data.error;
+            } else {
+                output.value = data.result;
+                status.innerText = (action === "encrypt")
+                    ? "✓ Enkripsi berhasil"
+                    : "✓ Dekripsi berhasil";
+            }
+        } catch (err) {
+            status.innerText = "Gagal menghubungi server.";
+        }
+    }
+
+    function downloadResult() {
+        const output = document.getElementById("outputText").value;
+        if (!output) {
+            alert("Tidak ada hasil yang dapat diunduh.");
+            return;
+        }
+        const blob = new Blob([output], { type: "application/octet-stream" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "ciphertext.dat";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    document.querySelectorAll('input[name="cipher"]').forEach(input => {
+        input.addEventListener("change", function () {
+            document.querySelectorAll(".cipher-option").forEach(opt =>
+                opt.classList.remove("active")
+            );
+            this.closest(".cipher-option").classList.add("active");
+        });
+    });
+</script>
 
 </body>
 

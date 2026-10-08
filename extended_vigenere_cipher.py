@@ -1,9 +1,13 @@
-import base64
-
+# ============================================================
+# EXTENDED VIGENERE CIPHER (MODUL) - MODULO 256
+# ============================================================
 
 def encrypt_extended_vigenere(plaintext, key):
     plaintext_bytes = plaintext.encode("utf-8")
     key_bytes = key.encode("utf-8")
+
+    if not key_bytes:
+        raise ValueError("Key tidak boleh kosong.")
 
     ciphertext = bytearray()
 
@@ -21,6 +25,9 @@ def encrypt_extended_vigenere(plaintext, key):
 def decrypt_extended_vigenere(ciphertext, key):
     key_bytes = key.encode("utf-8")
 
+    if not key_bytes:
+        raise ValueError("Key tidak boleh kosong.")
+
     plaintext = bytearray()
 
     for i in range(len(ciphertext)):
@@ -32,54 +39,3 @@ def decrypt_extended_vigenere(ciphertext, key):
         plaintext.append(p)
 
     return bytes(plaintext)
-
-
-# PROGRAM UTAMA
-print("=" * 50)
-print("       EXTENDED VIGENERE CIPHER")
-print("              MODULO 256")
-print("=" * 50)
-
-plaintext = input("\nMasukkan plaintext : ")
-key = input("Masukkan key       : ")
-
-if not key:
-    print("\nError: Key tidak boleh kosong.")
-
-else:
-    # ENKRIPSI
-    ciphertext = encrypt_extended_vigenere(plaintext, key)
-
-    # Ciphertext ditampilkan dalam Base64
-    ciphertext_base64 = base64.b64encode(ciphertext).decode("ascii")
-
-    # DEKRIPSI
-    decrypted_bytes = decrypt_extended_vigenere(ciphertext, key)
-    decrypted_text = decrypted_bytes.decode("utf-8")
-
-    # Plaintext hasil dekripsi dalam Base64
-    decrypted_base64 = base64.b64encode(
-        decrypted_bytes
-    ).decode("ascii")
-
-    print("\n" + "=" * 50)
-    print("HASIL ENKRIPSI")
-    print("=" * 50)
-
-    print("Plaintext          :", plaintext)
-    print("Key                :", key)
-    print("Ciphertext Base64  :", ciphertext_base64)
-
-    print("\n" + "=" * 50)
-    print("HASIL DEKRIPSI")
-    print("=" * 50)
-
-    print("Ciphertext Base64  :", ciphertext_base64)
-    print("Key                :", key)
-    print("Plaintext Base64   :", decrypted_base64)
-    print("Hasil Dekripsi     :", decrypted_text)
-
-    if decrypted_text == plaintext:
-        print("Status             : BERHASIL")
-    else:
-        print("Status             : GAGAL")
