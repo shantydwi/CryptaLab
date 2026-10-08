@@ -313,12 +313,6 @@ body {
 
 }
 
-.cipher-option.wide {
-
-    grid-column: span 2;
-
-}
-
 .cipher-option.bonus label {
 
     border-style: dashed;
@@ -909,16 +903,185 @@ footer strong {
 
     }
 
-    .cipher-option.wide {
-
-        grid-column: span 1;
-
-    }
-
     .action-buttons {
 
         grid-template-columns: 1fr;
 
     }
 
+}
+
+
+/* KEY INPUT - TAMBAHAN */
+
+.key-affine {
+    display: flex;
+    gap: 8px;
+}
+
+.key-affine input {
+    flex: 1;
+    border: 1px solid #dbe1e8;
+    border-radius: 9px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.key-affine input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px #dbeafe;
+}
+
+/* Hill matrix */
+.key-hill {
+    margin-bottom: 20px;
+}
+
+.hill-label {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.hill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    max-width: 180px;
+}
+
+.hill-grid input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #dbe1e8;
+    border-radius: 9px;
+    text-align: center;
+    font-family: "Consolas", monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+}
+
+.hill-grid input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px #dbeafe;
+}
+
+/* Super: 2 input */
+.key-super {
+    margin-bottom: 20px;
+}
+
+.super-input {
+    margin-bottom: 12px;
+}
+
+.super-input label {
+    display: block;
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.super-input input {
+    width: 100%;
+    border: 1px solid #dbe1e8;
+    border-radius: 9px;
+    padding: 11px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.super-input input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px #dbeafe;
+}
+
+/* Enigma */
+.key-enigma {
+    margin-bottom: 20px;
+}
+
+.enigma-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.enigma-row label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.enigma-row select,
+.enigma-row input {
+    border: 1px solid #dbe1e8;
+    border-radius: 9px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    background: white;
+}
+
+.enigma-row select:focus,
+.enigma-row input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px #dbeafe;
+}
+
+/* Upload file preview */
+.upload-box.has-file {
+    border-color: #2563eb;
+    border-style: solid;
+    background: #eff6ff;
+}
+
+.upload-box.has-file .upload-icon {
+    display: none;
+}
+
+/* Status warna */
+.status-success {
+    color: #16a34a !important;
+    font-weight: 600;
+}
+
+.status-error {
+    color: #dc2626 !important;
+    font-weight: 600;
+}
+
+/* Button disabled */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Tab aktif */
+.tab.active {
+    color: #2563eb;
+    font-weight: 600;
+    border-bottom: 2px solid #2563eb;
+}
+
+/* Responsive untuk enigma */
+@media (max-width: 600px) {
+    .enigma-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .hill-grid {
+        max-width: 100%;
+    }
 }

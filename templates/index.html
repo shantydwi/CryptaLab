@@ -15,447 +15,316 @@
 
     <!-- ================= HEADER ================= -->
     <header class="navbar">
-
         <div class="brand">
-
             <div class="brand-icon">🔐</div>
-
             <div>
                 <h1>Crypta<span>Lab</span></h1>
                 <p>Aplikasi Kriptografi</p>
             </div>
-
         </div>
 
         <div class="header-info">
             <span class="status-dot"></span>
             <span>Siap digunakan</span>
         </div>
-
     </header>
 
 
     <!-- ================= MAIN ================= -->
     <main class="container">
 
-        <!-- JUDUL -->
         <section class="page-title">
-
             <div>
-
                 <h2>Laboratorium Kriptografi</h2>
-
                 <p>
                     Enkripsi dan dekripsi pesan menggunakan berbagai
                     algoritma kriptografi.
                 </p>
-
             </div>
-
         </section>
 
 
         <!-- ================= PILIH CIPHER ================= -->
         <section class="card">
-
             <div class="section-title">
-
                 <div class="number">01</div>
-
                 <div>
                     <h3>Pilih Algoritma</h3>
                     <p>Pilih algoritma kriptografi yang ingin digunakan</p>
                 </div>
-
             </div>
-
 
             <div class="cipher-grid">
 
-                <!-- VIGENERE -->
                 <div class="cipher-option active">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="vigenere"
-                           checked>
-
+                    <input type="radio" name="cipher" id="vigenere" checked>
                     <label for="vigenere">
-
                         <div class="cipher-icon">V</div>
-
                         <div>
                             <strong>Vigenere Cipher</strong>
                             <small>Alfabet 26 huruf</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- AUTO KEY -->
                 <div class="cipher-option">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="autokey">
-
+                    <input type="radio" name="cipher" id="autokey">
                     <label for="autokey">
-
                         <div class="cipher-icon">A</div>
-
                         <div>
                             <strong>Auto-Key Vigenere</strong>
                             <small>Alfabet 26 huruf</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- EXTENDED -->
                 <div class="cipher-option">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="extended">
-
+                    <input type="radio" name="cipher" id="extended">
                     <label for="extended">
-
                         <div class="cipher-icon">E</div>
-
                         <div>
                             <strong>Extended Vigenere</strong>
                             <small>256 karakter ASCII</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- PLAYFAIR -->
                 <div class="cipher-option">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="playfair">
-
+                    <input type="radio" name="cipher" id="playfair">
                     <label for="playfair">
-
                         <div class="cipher-icon">P</div>
-
                         <div>
                             <strong>Playfair Cipher</strong>
                             <small>Alfabet 26 huruf</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- AFFINE -->
                 <div class="cipher-option">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="affine">
-
+                    <input type="radio" name="cipher" id="affine">
                     <label for="affine">
-
                         <div class="cipher-icon">Af</div>
-
                         <div>
                             <strong>Affine Cipher</strong>
                             <small>Alfabet 26 huruf</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- HILL -->
                 <div class="cipher-option">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="hill">
-
+                    <input type="radio" name="cipher" id="hill">
                     <label for="hill">
-
                         <div class="cipher-icon">H</div>
-
                         <div>
                             <strong>Hill Cipher</strong>
                             <small>Alfabet 26 huruf</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- SUPER ENCRYPTION -->
-                <div class="cipher-option wide">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="super">
-
+                <div class="cipher-option">
+                    <input type="radio" name="cipher" id="super">
                     <label for="super">
-
                         <div class="cipher-icon">S</div>
-
                         <div>
                             <strong>Super Enkripsi</strong>
-                            <small>
-                                Extended Vigenere + Transposisi Kolom
-                            </small>
+                            <small>Extended Vigenere + Transposisi Kolom</small>
                         </div>
-
                     </label>
-
                 </div>
 
-
-                <!-- ENIGMA -->
                 <div class="cipher-option bonus">
-
-                    <input type="radio"
-                           name="cipher"
-                           id="enigma">
-
+                    <input type="radio" name="cipher" id="enigma">
                     <label for="enigma">
-
                         <div class="cipher-icon">★</div>
-
                         <div>
                             <strong>Enigma Cipher</strong>
                             <small>Bonus</small>
                         </div>
-
                     </label>
-
                 </div>
 
             </div>
-
         </section>
 
 
         <!-- ================= AREA KERJA ================= -->
         <section class="workspace">
 
-
-            <!-- ================= INPUT ================= -->
+            <!-- INPUT -->
             <div class="card">
-
                 <div class="section-title">
-
                     <div class="number">02</div>
-
                     <div>
                         <h3>Masukkan Pesan</h3>
                         <p>Ketik pesan atau unggah file</p>
                     </div>
-
                 </div>
 
+                <label class="field-label">Pesan</label>
+                <textarea class="message-input"
+                          placeholder="Ketik atau tempel pesan di sini..."
+                          id="messageInput"></textarea>
 
-                <!-- PESAN -->
-                <label class="field-label">
-                    Pesan
-                </label>
-
-                <textarea
-                    class="message-input"
-                    placeholder="Ketik atau tempel pesan di sini..."
-                    id="messageInput"></textarea>
-
-
-                <!-- UPLOAD FILE -->
-                <label class="field-label">
-                    Atau unggah file
-                </label>
-
-                <div class="upload-box">
-
-                    <input type="file"
-                           id="fileInput">
-
-                    <div class="upload-content">
-
-                        <div class="upload-icon">
-                            ↑
-                        </div>
-
-                        <strong>
-                            Pilih file
-                        </strong>
-
-                        <span>
-                            File teks maupun file biner
-                        </span>
-
+                <label class="field-label">Atau unggah file</label>
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" id="fileInput">
+                    <div class="upload-content" id="uploadContent">
+                        <div class="upload-icon">↑</div>
+                        <strong id="uploadTitle">Pilih file</strong>
+                        <span id="uploadSubtitle">File teks maupun file biner</span>
                     </div>
-
                 </div>
 
+                <!-- ================= KUNCI: DINAMIS ================= -->
+                <label class="field-label" id="keyLabel">Kunci</label>
 
-                <!-- KUNCI -->
-                <label class="field-label">
-                    Kunci
-                </label>
-
-                <div class="key-input">
-
-                    <input
-                        type="password"
-                        placeholder="Masukkan kunci..."
-                        id="keyInput">
-
-                    <button type="button"
-                            onclick="toggleKey()">
-                        👁
-                    </button>
-
+                <!-- Default: teks -->
+                <div class="key-input" id="keyText">
+                    <input type="text"
+                           placeholder="Masukkan kunci..."
+                           id="keyInput">
                 </div>
 
+                <!-- Affine: 2 input -->
+                <div class="key-input key-affine" id="keyAffine" style="display:none;">
+                    <input type="number" placeholder="a" id="affineA">
+                    <input type="number" placeholder="b" id="affineB">
+                </div>
+
+                <!-- Hill: matriks 2x2 -->
+                <div class="key-hill" id="keyHill" style="display:none;">
+                    <div class="hill-label">Matriks Kunci (2×2)</div>
+                    <div class="hill-grid">
+                        <input type="number" placeholder="a11" id="hill11">
+                        <input type="number" placeholder="a12" id="hill12">
+                        <input type="number" placeholder="a21" id="hill21">
+                        <input type="number" placeholder="a22" id="hill22">
+                    </div>
+                </div>
+
+                <!-- Super: 2 input -->
+                <div class="key-super" id="keySuper" style="display:none;">
+                    <div class="super-input">
+                        <label>Key Extended Vigenere</label>
+                        <input type="text" placeholder="contoh: rahasia" id="superKE">
+                    </div>
+                    <div class="super-input">
+                        <label>Key Transposisi Kolom</label>
+                        <input type="text" placeholder="contoh: KUNCI" id="superKT">
+                    </div>
+                </div>
+
+                <!-- Enigma: dropdown + input -->
+                <div class="key-enigma" id="keyEnigma" style="display:none;">
+                    <div class="enigma-row">
+                        <label>Rotor Kiri</label>
+                        <select id="rotor1">
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                        </select>
+                    </div>
+                    <div class="enigma-row">
+                        <label>Rotor Tengah</label>
+                        <select id="rotor2">
+                            <option value="I">I</option>
+                            <option value="II" selected>II</option>
+                            <option value="III">III</option>
+                        </select>
+                    </div>
+                    <div class="enigma-row">
+                        <label>Rotor Kanan</label>
+                        <select id="rotor3">
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III" selected>III</option>
+                        </select>
+                    </div>
+                    <div class="enigma-row">
+                        <label>Posisi Awal</label>
+                        <input type="text" maxlength="3" value="AAA" id="enigmaPos">
+                    </div>
+                    <div class="enigma-row">
+                        <label>Plugboard (opsional)</label>
+                        <input type="text" placeholder="AV BS CG" id="enigmaPlug">
+                    </div>
+                </div>
 
                 <!-- TOMBOL -->
                 <div class="action-buttons">
-
                     <button class="btn encrypt-btn"
+                            id="btnEncrypt"
                             onclick="showDemo('encrypt')">
-
-                        <span>🔒</span>
-                        Enkripsi
-
+                        <span>🔒</span> Enkripsi
                     </button>
-
 
                     <button class="btn decrypt-btn"
+                            id="btnDecrypt"
                             onclick="showDemo('decrypt')">
-
-                        <span>🔓</span>
-                        Dekripsi
-
+                        <span>🔓</span> Dekripsi
                     </button>
-
                 </div>
-
             </div>
 
 
-            <!-- ================= HASIL ================= -->
+            <!-- HASIL -->
             <div class="card result-card">
-
                 <div class="section-title">
-
                     <div class="number">03</div>
-
                     <div>
                         <h3>Hasil</h3>
                         <p>Hasil enkripsi atau dekripsi</p>
                     </div>
-
                 </div>
 
-
-                <!-- TAB -->
                 <div class="result-tabs">
-
                     <button class="tab active"
-                            onclick="changeTab('text', this)">
-                        Teks
-                    </button>
-
+                            id="tabText"
+                            onclick="changeTab('text', this)">Teks</button>
                     <button class="tab"
-                            onclick="changeTab('base64', this)">
-                        Base64
-                    </button>
-
+                            id="tabBase64"
+                            onclick="changeTab('base64', this)">Base64</button>
                 </div>
 
-
-                <!-- OUTPUT -->
                 <div class="output-wrapper">
-
-                    <textarea
-                        id="outputText"
-                        class="output-area"
-                        readonly
-                        placeholder="Hasil akan ditampilkan di sini..."></textarea>
-
+                    <textarea id="outputText"
+                              class="output-area"
+                              readonly
+                              placeholder="Hasil akan ditampilkan di sini..."></textarea>
                     <div class="output-info">
-
-                        <span id="outputStatus">
-                            Belum ada hasil
-                        </span>
-
-                        <span>
-                            0 karakter
-                        </span>
-
+                        <span id="outputStatus">Belum ada hasil</span>
+                        <span id="outputCount">0 karakter</span>
                     </div>
-
                 </div>
 
-
-                <!-- DOWNLOAD -->
-                <button class="download-btn"
-                        onclick="downloadResult()">
-
-                    <span>↓</span>
-
-                    Unduh Hasil
-
+                <button class="download-btn" onclick="downloadResult()">
+                    <span>↓</span> Unduh Hasil
                 </button>
-
             </div>
-
         </section>
 
 
-        <!-- ================= INFORMASI ================= -->
+        <!-- INFORMASI -->
         <section class="info-box">
-
-            <div class="info-icon">
-                i
-            </div>
-
+            <div class="info-icon">i</div>
             <div>
-
                 <strong>Informasi</strong>
-
-                <p>
+                <p id="infoText">
                     Untuk algoritma yang menggunakan alfabet 26 huruf,
                     karakter selain alfabet akan dihapus pada proses
                     enkripsi dan dekripsi.
                 </p>
-
             </div>
-
         </section>
 
 
-        <!-- ================= FOOTER ================= -->
         <footer>
-
             <div>
                 <strong>CryptaLab</strong>
-                <span> • </span>
-                Proyek Kriptografi
+                <span> • </span> Proyek Kriptografi
             </div>
-
-            <div>
-                The Cipherlings
-            </div>
-
+            <div>The Cipherlings</div>
         </footer>
 
     </main>
@@ -463,9 +332,84 @@
 
     <!-- ================= JAVASCRIPT ================= -->
     <script>
-    function toggleKey() {
-        const input = document.getElementById("keyInput");
-        input.type = (input.type === "password") ? "text" : "password";
+    let lastResult = "";
+    let currentTab = "text";
+    let uploadedFileName = "";
+
+    const keyFields = {
+        keyText:   document.getElementById("keyText"),
+        keyAffine: document.getElementById("keyAffine"),
+        keyHill:   document.getElementById("keyHill"),
+        keySuper:  document.getElementById("keySuper"),
+        keyEnigma: document.getElementById("keyEnigma"),
+    };
+
+    const infoText = document.getElementById("infoText");
+    const keyLabel = document.getElementById("keyLabel");
+
+    const INFO_MAP = {
+        vigenere: "Key berupa teks alfabet. Contoh: LEMON",
+        autokey:  "Key berupa teks alfabet. Contoh: LEMON",
+        extended: "Key berupa teks bebas. Bekerja pada 256 karakter ASCII.",
+        playfair: "Key berupa teks alfabet (J digabung ke I). Contoh: KUNCI",
+        affine:   "Nilai a harus relatif prima dengan 26 (1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25).",
+        hill:     "Determinan matriks harus relatif prima dengan 26.",
+        super:    "Tahap 1: Extended Vigenere. Tahap 2: Transposisi Kolom.",
+        enigma:   "Default: rotor I-II-III, posisi AAA, plugboard kosong.",
+    };
+
+    function showKeyFields(algorithm) {
+        Object.values(keyFields).forEach(el => el.style.display = "none");
+
+        if (algorithm === "affine") {
+            keyFields.keyAffine.style.display = "flex";
+            keyLabel.innerText = "Parameter (a, b)";
+        } else if (algorithm === "hill") {
+            keyFields.keyHill.style.display = "block";
+            keyLabel.innerText = "Matriks Kunci";
+        } else if (algorithm === "super") {
+            keyFields.keySuper.style.display = "block";
+            keyLabel.innerText = "Kunci";
+        } else if (algorithm === "enigma") {
+            keyFields.keyEnigma.style.display = "block";
+            keyLabel.innerText = "Konfigurasi Enigma";
+        } else {
+            keyFields.keyText.style.display = "flex";
+            keyLabel.innerText = "Kunci";
+        }
+
+        infoText.innerText = INFO_MAP[algorithm] || INFO_MAP.vigenere;
+    }
+
+    function buildKey(algorithm) {
+        if (algorithm === "affine") {
+            const a = document.getElementById("affineA").value || "0";
+            const b = document.getElementById("affineB").value || "0";
+            return `${a},${b}`;
+        }
+        if (algorithm === "hill") {
+            return [
+                document.getElementById("hill11").value || "0",
+                document.getElementById("hill12").value || "0",
+                document.getElementById("hill21").value || "0",
+                document.getElementById("hill22").value || "0",
+            ].join(",");
+        }
+        if (algorithm === "super") {
+            const ke = document.getElementById("superKE").value;
+            const kt = document.getElementById("superKT").value;
+            return `${ke},${kt}`;
+        }
+        if (algorithm === "enigma") {
+            return [
+                document.getElementById("rotor1").value,
+                document.getElementById("rotor2").value,
+                document.getElementById("rotor3").value,
+                document.getElementById("enigmaPos").value || "AAA",
+                document.getElementById("enigmaPlug").value,
+            ].join(",");
+        }
+        return document.getElementById("keyInput").value;
     }
 
     function changeTab(type, button) {
@@ -473,13 +417,36 @@
             tab.classList.remove("active")
         );
         button.classList.add("active");
+
+        currentTab = type;
+
+        const output = document.getElementById("outputText");
+        const count = document.getElementById("outputCount");
+
+        if (!lastResult) {
+            output.value = "";
+            count.innerText = "0 karakter";
+            return;
+        }
+
+        if (type === "base64") {
+            // Encode ke Base64 (unicode-safe)
+            const b64 = btoa(unescape(encodeURIComponent(lastResult)));
+            output.value = b64;
+            count.innerText = b64.length + " karakter";
+        } else {
+            output.value = lastResult;
+            count.innerText = lastResult.length + " karakter";
+        }
     }
 
     async function showDemo(action) {
         const output = document.getElementById("outputText");
         const status = document.getElementById("outputStatus");
+        const count  = document.getElementById("outputCount");
         const input  = document.getElementById("messageInput").value;
-        const key    = document.getElementById("keyInput").value;
+        const btnE   = document.getElementById("btnEncrypt");
+        const btnD   = document.getElementById("btnDecrypt");
 
         const algorithm = document.querySelector(
             'input[name="cipher"]:checked'
@@ -488,10 +455,17 @@
         if (input.trim() === "") {
             output.value = "";
             status.innerText = "Silakan masukkan pesan terlebih dahulu.";
+            status.className = "";
+            count.innerText = "0 karakter";
             return;
         }
 
+        const key = buildKey(algorithm);
+
         status.innerText = "Memproses...";
+        status.className = "";
+        btnE.disabled = true;
+        btnD.disabled = true;
 
         try {
             const response = await fetch("/process", {
@@ -509,15 +483,33 @@
 
             if (data.error) {
                 output.value = "";
-                status.innerText = "Error: " + data.error;
+                status.innerText = "✗ Error: " + data.error;
+                status.className = "status-error";
+                count.innerText = "0 karakter";
+                lastResult = "";
             } else {
-                output.value = data.result;
+                lastResult = data.result;
                 status.innerText = (action === "encrypt")
                     ? "✓ Enkripsi berhasil"
                     : "✓ Dekripsi berhasil";
+                status.className = "status-success";
+
+                // Apply tab yang sedang aktif
+                if (currentTab === "base64") {
+                    const b64 = btoa(unescape(encodeURIComponent(lastResult)));
+                    output.value = b64;
+                    count.innerText = b64.length + " karakter";
+                } else {
+                    output.value = lastResult;
+                    count.innerText = lastResult.length + " karakter";
+                }
             }
         } catch (err) {
             status.innerText = "Gagal menghubungi server.";
+            status.className = "status-error";
+        } finally {
+            btnE.disabled = false;
+            btnD.disabled = false;
         }
     }
 
@@ -527,23 +519,58 @@
             alert("Tidak ada hasil yang dapat diunduh.");
             return;
         }
+
+        let filename = "ciphertext.txt";
+        if (uploadedFileName) {
+            const base = uploadedFileName.replace(/\.[^/.]+$/, "");
+            filename = `${base}_result.txt`;
+        }
+
         const blob = new Blob([output], { type: "application/octet-stream" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "ciphertext.dat";
+        a.download = filename;
         a.click();
         URL.revokeObjectURL(url);
     }
 
+    // =====================
+    // UPLOAD FILE
+    // =====================
+    document.getElementById("fileInput").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        uploadedFileName = file.name;
+
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+            document.getElementById("messageInput").value = evt.target.result;
+            document.getElementById("uploadTitle").innerText = "📄 " + file.name;
+            document.getElementById("uploadSubtitle").innerText =
+                (file.size / 1024).toFixed(1) + " KB";
+            document.getElementById("uploadBox").classList.add("has-file");
+        };
+        reader.readAsText(file);
+    });
+
+    // =====================
+    // PEMILIHAN ALGORITMA
+    // =====================
     document.querySelectorAll('input[name="cipher"]').forEach(input => {
         input.addEventListener("change", function () {
             document.querySelectorAll(".cipher-option").forEach(opt =>
                 opt.classList.remove("active")
             );
             this.closest(".cipher-option").classList.add("active");
+
+            showKeyFields(this.id);
         });
     });
+
+    // Inisialisasi awal
+    showKeyFields("vigenere");
 </script>
 
 </body>

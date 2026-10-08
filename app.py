@@ -36,51 +36,83 @@ def process():
     try:
         result = ""
 
+        # -------- VIGENERE --------
         if algorithm == "vigenere":
             result = vigenere_encrypt(text, key) if mode == "encrypt" \
                      else vigenere_decrypt(text, key)
 
+        # -------- AUTO-KEY VIGENERE --------
         elif algorithm == "autokey":
             result = varian_vigenere_encrypt(text, key) if mode == "encrypt" \
                      else varian_vigenere_decrypt(text, key)
 
+        # -------- EXTENDED VIGENERE --------
         elif algorithm == "extended":
             if mode == "encrypt":
                 cb = encrypt_extended_vigenere(text, key)
                 result = base64.b64encode(cb).decode("ascii")
             else:
                 cb = base64.b64decode(text)
-                result = decrypt_extended_vigenere(cb, key).decode("utf-8", errors="replace")
+                result = decrypt_extended_vigenere(cb, key).decode(
+                    "utf-8", errors="replace"
+                )
 
+        # -------- AFFINE --------
         elif algorithm == "affine":
-            a, b = map(int, key.split(","))
+            parts = key.split(",")
+            if len(parts) != 2:
+                raise ValueError("Format key Affine: a,b (contoh: 5,8)")
+            a, b = int(parts[0].strip()), int(parts[1].strip())
+
             result = affine_encrypt(text, a, b) if mode == "encrypt" \
                      else affine_decrypt(text, a, b)
 
+        # -------- HILL --------
         elif algorithm == "hill":
-            vals = list(map(int, key.split(",")))
+            parts = key.split(",")
+            if len(parts) != 4:
+                raise ValueError(
+                    "Format key Hill: a11,a12,a21,a22 (contoh: 3,3,2,5)"
+                )
+            vals = [int(p.strip()) for p in parts]
             matrix = [[vals[0], vals[1]], [vals[2], vals[3]]]
+
             result = hill_encrypt(text, matrix) if mode == "encrypt" \
                      else hill_decrypt(text, matrix)
 
+        # -------- PLAYFAIR --------
         elif algorithm == "playfair":
             result = playfair_encrypt(text, key) if mode == "encrypt" \
                      else playfair_decrypt(text, key)
 
+        # -------- SUPER ENKRIPSI --------
         elif algorithm == "super":
-            kv, ke = key.split(",", 1)
+            if "," not in key:
+                raise ValueError(
+                    "Format key Super: keyExtended,keyTransposisi"
+                )
+            ke, kt = key.split(",", 1)
+            ke, kt = ke.strip(), kt.strip()
+
             if mode == "encrypt":
-                _, cb = super_enkripsi(text, kv.strip(), ke.strip())
+                _, cb = super_enkripsi(text, ke, kt)
                 result = base64.b64encode(cb).decode("ascii")
             else:
                 cb = base64.b64decode(text)
-                _, result = super_dekripsi(cb, kv.strip(), ke.strip())
+                _, result = super_dekripsi(cb, ke, kt)
+                result = result.decode("utf-8", errors="replace")
 
+        # -------- ENIGMA --------
         elif algorithm == "enigma":
             parts = key.split(",", 4)
-            rotors = (parts[0], parts[1], parts[2])
-            posisi = parts[3] if len(parts) > 3 else "AAA"
-            plug = parts[4] if len(parts) > 4 else ""
+            if len(parts) < 4:
+                raise ValueError(
+                    "Format key Enigma: rotor1,rotor2,rotor3,posisi[,plugboard]"
+                )
+            rotors = (parts[0].strip(), parts[1].strip(), parts[2].strip())
+            posisi = parts[3].strip() if len(parts) > 3 else "AAA"
+            plug = parts[4].strip() if len(parts) > 4 else ""
+
             result = enigma(text, rotors, posisi, plug)
 
         else:

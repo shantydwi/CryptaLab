@@ -1,119 +1,93 @@
-# ============================================================
-# SUPER ENKRIPSI: VARIAN VIGENERE + EXTENDED VIGENERE (MODUL)
-# ============================================================
+# SUPER ENKRIPSI: EXTENDED VIGENERE + TRANSPOSISI KOLOM (MODUL)
 
-# ==============================
-# VARIAN VIGENERE
-# ==============================
+from extended_vigenere_cipher import (
+    encrypt_extended_vigenere,
+    decrypt_extended_vigenere,
+)
 
-def varian_vigenere_encrypt(plaintext, key):
-    plaintext = "".join(c for c in plaintext.upper() if c.isalpha())
-    key = "".join(c for c in key.upper() if c.isalpha())
 
+# TRANSPOSISI KOLOM
+def transposisi_kolom_encrypt(plaintext_bytes, key):
+    """
+    Cipher transposisi kolom.
+    plaintext_bytes : bytes
+    key             : string (kata kunci)
+    return          : bytes
+    """
     if not key:
-        raise ValueError("Key tidak boleh kosong")
+        raise ValueError("Key transposisi tidak boleh kosong.")
 
-    extended_key = key + plaintext
+    n_cols = len(key)
+    n_rows = (len(plaintext_bytes) + n_cols - 1) // n_cols
 
-    ciphertext = ""
-    for i, char in enumerate(plaintext):
-        p = ord(char) - ord('A')
-        k = ord(extended_key[i]) - ord('A')
-        c = (p + k) % 26
-        ciphertext += chr(c + ord('A'))
+    # Padding dengan spasi (0x20) agar penuh
+    padded = plaintext_bytes + b'\x20' * (n_rows * n_cols - len(plaintext_bytes))
 
-    return ciphertext
+    # Buat matriks baris x kolom
+    matrix = [list(padded[i * n_cols:(i + 1) * n_cols]) for i in range(n_rows)]
+
+    # Urutan kolom berdasarkan karakter key (di-sort alfabetis)
+    order = sorted(range(n_cols), key=lambda i: key[i])
+
+    # Baca kolom sesuai urutan
+    result = bytearray()
+    for col in order:
+        for row in range(n_rows):
+            result.append(matrix[row][col])
+
+    return bytes(result)
 
 
-def varian_vigenere_decrypt(ciphertext, key):
-    ciphertext = "".join(c for c in ciphertext.upper() if c.isalpha())
-    key = "".join(c for c in key.upper() if c.isalpha())
-
+def transposisi_kolom_decrypt(ciphertext_bytes, key):
     if not key:
-        raise ValueError("Key tidak boleh kosong")
+        raise ValueError("Key transposisi tidak boleh kosong.")
 
-    plaintext = ""
-    for i, char in enumerate(ciphertext):
-        c = ord(char) - ord('A')
+    n_cols = len(key)
+    n_rows = (len(ciphertext_bytes) + n_cols - 1) // n_cols
 
-        if i < len(key):
-            k = ord(key[i]) - ord('A')
-        else:
-            k = ord(plaintext[i - len(key)]) - ord('A')
+    order = sorted(range(n_cols), key=lambda i: key[i])
 
-        p = (c - k) % 26
-        plaintext += chr(p + ord('A'))
+    # Pecah ciphertext ke kolom sesuai urutan
+    cols_data = {}
+    idx = 0
+    for col in order:
+        cols_data[col] = list(ciphertext_bytes[idx:idx + n_rows])
+        idx += n_rows
 
-    return plaintext
+    # Rekonstruksi matriks per baris
+    result = bytearray()
+    for row in range(n_rows):
+        for col in range(n_cols):
+            result.append(cols_data[col][row])
 
-
-# ==============================
-# EXTENDED VIGENERE
-# ==============================
-
-def extended_vigenere_encrypt(plaintext, key):
-    plaintext_bytes = plaintext.encode("utf-8")
-    key_bytes = key.encode("utf-8")
-
-    if not key_bytes:
-        raise ValueError("Key tidak boleh kosong")
-
-    ciphertext = bytearray()
-    for i in range(len(plaintext_bytes)):
-        p = plaintext_bytes[i]
-        k = key_bytes[i % len(key_bytes)]
-        c = (p + k) % 256
-        ciphertext.append(c)
-
-    return bytes(ciphertext)
-
-
-def extended_vigenere_decrypt(ciphertext, key):
-    key_bytes = key.encode("utf-8")
-
-    if not key_bytes:
-        raise ValueError("Key tidak boleh kosong")
-
-    plaintext = bytearray()
-    for i in range(len(ciphertext)):
-        c = ciphertext[i]
-        k = key_bytes[i % len(key_bytes)]
-        p = (c - k) % 256
-        plaintext.append(p)
-
-    return bytes(plaintext)
+    return bytes(result)
 
 
 # ==============================
 # SUPER ENKRIPSI
 # ==============================
 
-def super_enkripsi(plaintext, key_varian, key_extended):
-    # Tahap 1: Varian Vigenere
-    hasil_varian = varian_vigenere_encrypt(plaintext, key_varian)
+def super_enkripsi(plaintext, key_extended, key_transposisi):
+    # Tahap 1: Extended Vigenere
+    hasil_vigenere = encrypt_extended_vigenere(plaintext, key_extended)
 
-    # Tahap 2: Extended Vigenere
-    hasil_extended = extended_vigenere_encrypt(
-        hasil_varian, key_extended
+    # Tahap 2: Transposisi Kolom
+    hasil_transposisi = transposisi_kolom_encrypt(
+        hasil_vigenere, key_transposisi
     )
 
-    return hasil_varian, hasil_extended
+    return hasil_vigenere, hasil_transposisi
 
 
-# ==============================
-# SUPER DEKRIPSI
-# ==============================
-
-def super_dekripsi(ciphertext, key_varian, key_extended):
-    # Tahap 1: Extended Vigenere (kebalikan)
-    hasil_extended = extended_vigenere_decrypt(
-        ciphertext, key_extended
-    )
-    hasil_extended = hasil_extended.decode("utf-8")
-
-    # Tahap 2: Varian Vigenere (kebalikan)
-    hasil_varian = varian_vigenere_decrypt(
-        hasil_extended, key_varian
+def super_dekripsi(ciphertext, key_extended, key_transposisi):
+    # Tahap 1: Transposisi Kolom (kebalikan)
+    hasil_transposisi = transposisi_kolom_decrypt(
+        ciphertext, key_transposisi
     )
 
-    return hasil_extended, hasil_varian
+    # Tahap 2: Extended Vigenere (kebalikan)
+    hasil_vigenere = decrypt_extended_vigenere(
+        hasil_transposisi, key_extended
+    )
+
+    return hasil_transposisi, hasil_vigenere
