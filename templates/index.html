@@ -10,7 +10,6 @@
 
 <body>
 
-    <!-- HEADER -->
     <header class="navbar">
         <div class="brand">
             <div class="brand-icon">🔐</div>
@@ -34,7 +33,6 @@
             </div>
         </section>
 
-        <!-- PILIH CIPHER -->
         <section class="card">
             <div class="section-title">
                 <div class="number">01</div>
@@ -104,7 +102,6 @@
             </div>
         </section>
 
-        <!-- AREA KERJA -->
         <section class="workspace">
 
             <div class="card">
@@ -130,7 +127,6 @@
                     </div>
                 </div>
 
-                <!-- KUNCI DINAMIS -->
                 <label class="field-label" id="keyLabel">Kunci</label>
 
                 <div class="key-input" id="keyText">
@@ -257,15 +253,20 @@
     </main>
 
     <script>
+        // =====================================================
+        // VARIABEL GLOBAL
+        // =====================================================
         let lastResult = "";
         let currentTab = "text";
         let uploadedFileName = "";
         let uploadedFileExt = "";
         let lastMode = "";
 
-        // Simpan byte asli file (kalau upload file)
         let uploadedFileBytes = null;
         let isFromFile = false;
+
+        // Nama file asli yang mau dipakai saat dekripsi
+        let originalFileNameForDecrypt = "";
 
         const keyFields = {
             keyText: document.getElementById("keyText"),
@@ -281,7 +282,7 @@
         const INFO_MAP = {
             vigenere: "Key berupa teks alfabet. Contoh: LEMON",
             autokey: "Key berupa teks alfabet. Contoh: LEMON",
-            extended: "Key berupa teks bebas. Bekerja pada 256 karakter ASCII. Mendukung file biner.",
+            extended: "Key berupa teks bebas. Mendukung file biner (semua ekstensi).",
             playfair: "Key berupa teks alfabet (J digabung ke I). Contoh: KUNCI",
             affine: "Nilai a harus relatif prima dengan 26 (1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25).",
             hill: "Determinan matriks harus relatif prima dengan 26.",
@@ -289,9 +290,12 @@
             enigma: "Default: rotor I-II-III, posisi AAA, plugboard kosong.",
         };
 
-        // Cipher yang mendukung file biner
         const BINARY_CIPHERS = ["extended", "super"];
+        const ALLOWED_TEXT_EXTS = [".txt", ".csv"];
 
+        // =====================================================
+        // TAMPILKAN FIELD KUNCI SESUAI ALGORITMA
+        // =====================================================
         function showKeyFields(algorithm) {
             Object.values(keyFields).forEach(el => el.style.display = "none");
 
@@ -315,6 +319,9 @@
             infoText.innerText = INFO_MAP[algorithm] || INFO_MAP.vigenere;
         }
 
+        // =====================================================
+        // BANGUN KEY DARI INPUT
+        // =====================================================
         function buildKey(algorithm) {
             if (algorithm === "affine") {
                 const a = document.getElementById("affineA").value || "0";
@@ -346,9 +353,9 @@
             return document.getElementById("keyInput").value;
         }
 
-        // =====================
+        // =====================================================
         // BASE64 HELPERS
-        // =====================
+        // =====================================================
         function bytesToBase64(bytes) {
             let binary = "";
             for (let i = 0; i < bytes.length; i++) {
@@ -366,6 +373,9 @@
             return bytes;
         }
 
+        // =====================================================
+        // GANTI TAB OUTPUT (TEKS / BASE64)
+        // =====================================================
         function changeTab(type, button) {
             document.querySelectorAll(".tab").forEach(tab =>
                 tab.classList.remove("active")
@@ -383,8 +393,6 @@
             }
 
             if (type === "base64") {
-                // lastResult sudah berupa string Base64 untuk file biner
-                // atau teks biasa — encode ke Base64
                 const b64 = btoa(unescape(encodeURIComponent(lastResult)));
                 output.value = b64;
                 count.innerText = b64.length + " karakter";
@@ -394,6 +402,9 @@
             }
         }
 
+        // =====================================================
+        // PROSES ENKRIPSI / DEKRIPSI
+        // =====================================================
         async function showDemo(action) {
             const output = document.getElementById("outputText");
             const status = document.getElementById("outputStatus");
@@ -407,6 +418,17 @@
             )?.id;
 
             lastMode = action;
+
+            // Simpan nama file asli saat ENKRIPSI (untuk dipakai saat DEKRIPSI nanti)
+            if (action === "encrypt" && isFromFile && uploadedFileName) {
+                // Hapus _encrypted.dat kalau ada, ambil nama dasarnya
+                let originalName = uploadedFileName;
+
+                // Kalau nama sudah berbentuk xxx_encrypted.dat, revert ke .txt
+                // (tapi ini hanya fallback, bukan cara utama)
+                originalFileNameForDecrypt = originalName;
+                console.log("[INFO] File asli yang disimpan:", originalFileNameForDecrypt);
+            }
 
             if (input.trim() === "") {
                 output.value = "";
@@ -432,7 +454,8 @@
                         mode: action,
                         text: input,
                         key: key,
-                        isFile: isFromFile
+                        isFile: isFromFile,
+                        filename: uploadedFileName
                     })
                 });
 
@@ -469,6 +492,9 @@
             }
         }
 
+        // =====================================================
+        // DOWNLOAD HASIL
+        // =====================================================
         function downloadResult() {
             const output = document.getElementById("outputText").value;
             if (!output) {
@@ -483,36 +509,75 @@
             let filename = "ciphertext.txt";
             let blob;
 
-            // Kalau file biner & dari file & mode dekripsi → decode Base64
-            if (isFromFile && BINARY_CIPHERS.includes(algorithm) && lastMode === "decrypt") {
-                try {
-                    const bytes = base64ToBytes(output);
-                    blob = new Blob([bytes], { type: "application/octet-stream" });
-                    filename = uploadedFileName;   // nama asli
-                } catch (e) {
-                    // fallback
-                    blob = new Blob([output], { type: "application/octet-stream" });
-                }
-            } else if (isFromFile && BINARY_CIPHERS.includes(algorithm) && lastMode === "encrypt") {
-                // Enkripsi file biner → output Base64, simpan sebagai .dat
-                blob = new Blob([output], { type: "application/octet-stream" });
-                const base = uploadedFileName.replace(/\.[^/.]+$/, "");
-                filename = `${base}_encrypted.dat`;
-            } else {
-                // Cipher 26 huruf atau input teks
-                blob = new Blob([output], { type: "application/octet-stream" });
+            console.log("[DOWNLOAD] mode:", lastMode,
+                        "| isFromFile:", isFromFile,
+                        "| algorithm:", algorithm);
+            console.log("[DOWNLOAD] output preview:", output.substring(0, 80));
 
-                if (uploadedFileName) {
-                    if (lastMode === "decrypt") {
-                        filename = uploadedFileName;
-                    } else if (lastMode === "encrypt") {
-                        const base = uploadedFileName.replace(/\.[^/.]+$/, "");
-                        filename = `${base}_encrypted.dat`;
+            // =====================================================
+            // DEKRIPSI dari file → parse JSON { filename, data }
+            // =====================================================
+            if (lastMode === "decrypt" && isFromFile) {
+                let parsedOk = false;
+
+                try {
+                    const parsed = JSON.parse(output);
+                    console.log("[DOWNLOAD] parsed:", parsed);
+
+                    if (parsed.filename) {
+                        filename = parsed.filename;
+                        parsedOk = true;
+                    }
+
+                    if (BINARY_CIPHERS.includes(algorithm)) {
+                        const bytes = base64ToBytes(parsed.data);
+                        blob = new Blob([bytes], { type: "application/octet-stream" });
                     } else {
-                        filename = uploadedFileName;
+                        blob = new Blob([parsed.data], { type: "text/plain" });
+                    }
+                } catch (err) {
+                    console.log("[DOWNLOAD] JSON parse error:", err.message);
+                }
+
+                // Fallback kalau bukan JSON
+                if (!parsedOk) {
+                    blob = new Blob([output], { type: "application/octet-stream" });
+
+                    // Pakai nama file asli yang disimpan saat enkripsi
+                    if (originalFileNameForDecrypt) {
+                        filename = originalFileNameForDecrypt;
+                    } else {
+                        // Kalau tidak ada, coba tebak dari nama .dat
+                        filename = uploadedFileName
+                            .replace(/_encrypted\.dat$/i, "")
+                            .replace(/\.dat$/i, "");
+
+                        // Kalau tidak ada ekstensi, kasih .txt
+                        if (!/\.[a-z0-9]+$/i.test(filename)) {
+                            filename += ".txt";
+                        }
                     }
                 }
             }
+
+            // =====================================================
+            // ENKRIPSI dari file → simpan sebagai .dat
+            // =====================================================
+            else if (lastMode === "encrypt" && isFromFile) {
+                blob = new Blob([output], { type: "application/octet-stream" });
+                const base = (uploadedFileName || "ciphertext").replace(/\.[^/.]+$/, "");
+                filename = `${base}_encrypted.dat`;
+            }
+
+            // =====================================================
+            // INPUT TEKS MANUAL
+            // =====================================================
+            else {
+                blob = new Blob([output], { type: "application/octet-stream" });
+                filename = "ciphertext.txt";
+            }
+
+            console.log("[DOWNLOAD] final filename:", filename);
 
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -522,9 +587,9 @@
             URL.revokeObjectURL(url);
         }
 
-        // =====================
-        // UPLOAD FILE — BACA SEBAGAI BYTE
-        // =====================
+        // =====================================================
+        // UPLOAD FILE — VALIDASI & BACA
+        // =====================================================
         document.getElementById("fileInput").addEventListener("change", function (e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -532,35 +597,55 @@
             uploadedFileName = file.name;
 
             const dotIdx = file.name.lastIndexOf(".");
-            uploadedFileExt = dotIdx !== -1 ? file.name.slice(dotIdx) : "";
-
-            // Deteksi apakah file teks atau biner
-            const textExts = [".txt", ".csv", ".json", ".html", ".xml", ".md", ".log", ".py", ".js", ".css"];
-            const isText = textExts.includes(uploadedFileExt.toLowerCase());
+            uploadedFileExt = dotIdx !== -1 ? file.name.slice(dotIdx).toLowerCase() : "";
 
             const algorithm = document.querySelector(
                 'input[name="cipher"]:checked'
             )?.id;
 
-            // Kalau cipher biner (extended/super) ATAU file biner → baca sebagai byte
-            if (BINARY_CIPHERS.includes(algorithm) || !isText) {
+            const isBinaryCipher = BINARY_CIPHERS.includes(algorithm);
+            const isDatFile = uploadedFileExt === ".dat";
+
+            // VALIDASI
+            if (!isDatFile && !isBinaryCipher && !ALLOWED_TEXT_EXTS.includes(uploadedFileExt)) {
+                alert(
+                    "FILE TIDAK DIDUKUNG!\n\n" +
+                    "Cipher \"" + algorithm + "\" hanya untuk file .txt dan .csv.\n" +
+                    "File Anda: " + (uploadedFileExt || "(tanpa ekstensi)") + "\n\n" +
+                    "Untuk file lain (.pdf, .jpg, .docx, .html, dll), " +
+                    "silakan gunakan Extended Vigenere atau Super Enkripsi.\n\n" +
+                    "File .dat (hasil enkripsi) tetap bisa diupload untuk dekripsi."
+                );
+                e.target.value = "";
+                document.getElementById("uploadTitle").innerText = "Pilih file";
+                document.getElementById("uploadSubtitle").innerText = "File teks maupun file biner";
+                document.getElementById("uploadBox").classList.remove("has-file");
+                isFromFile = false;
+                uploadedFileName = "";
+                uploadedFileExt = "";
+                return;
+            }
+
+            // BACA FILE
+            if (isDatFile || isBinaryCipher) {
+                // Baca sebagai byte
                 const reader = new FileReader();
                 reader.onload = function (evt) {
                     const bytes = new Uint8Array(evt.target.result);
                     uploadedFileBytes = bytes;
+                    isFromFile = true;
 
                     const b64 = bytesToBase64(bytes);
                     document.getElementById("messageInput").value = b64;
 
                     document.getElementById("uploadTitle").innerText = "📄 " + file.name;
                     document.getElementById("uploadSubtitle").innerText =
-                        (file.size / 1024).toFixed(1) + " KB (biner → Base64)";
+                        (file.size / 1024).toFixed(1) + " KB (dibaca sebagai byte)";
                     document.getElementById("uploadBox").classList.add("has-file");
-                    isFromFile = true;
                 };
                 reader.readAsArrayBuffer(file);
             } else {
-                // Cipher 26 huruf + file teks → baca sebagai teks
+                // Baca sebagai teks
                 const reader = new FileReader();
                 reader.onload = function (evt) {
                     document.getElementById("messageInput").value = evt.target.result;
@@ -575,9 +660,9 @@
             }
         });
 
-        // =====================
+        // =====================================================
         // PEMILIHAN ALGORITMA
-        // =====================
+        // =====================================================
         document.querySelectorAll('input[name="cipher"]').forEach(input => {
             input.addEventListener("change", function () {
                 document.querySelectorAll(".cipher-option").forEach(opt =>
