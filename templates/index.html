@@ -4,16 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Aplikasi Kriptografi</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+    <!-- HEADER -->
     <header class="navbar">
         <div class="brand">
             <div class="brand-icon">🔐</div>
@@ -22,29 +19,22 @@
                 <p>Aplikasi Kriptografi</p>
             </div>
         </div>
-
         <div class="header-info">
             <span class="status-dot"></span>
             <span>Siap digunakan</span>
         </div>
     </header>
 
-
-    <!-- ================= MAIN ================= -->
     <main class="container">
 
         <section class="page-title">
             <div>
                 <h2>Laboratorium Kriptografi</h2>
-                <p>
-                    Enkripsi dan dekripsi pesan menggunakan berbagai
-                    algoritma kriptografi.
-                </p>
+                <p>Enkripsi dan dekripsi pesan menggunakan berbagai algoritma kriptografi.</p>
             </div>
         </section>
 
-
-        <!-- ================= PILIH CIPHER ================= -->
+        <!-- PILIH CIPHER -->
         <section class="card">
             <div class="section-title">
                 <div class="number">01</div>
@@ -55,103 +45,68 @@
             </div>
 
             <div class="cipher-grid">
-
                 <div class="cipher-option active">
                     <input type="radio" name="cipher" id="vigenere" checked>
                     <label for="vigenere">
                         <div class="cipher-icon">V</div>
-                        <div>
-                            <strong>Vigenere Cipher</strong>
-                            <small>Alfabet 26 huruf</small>
-                        </div>
+                        <div><strong>Vigenere Cipher</strong><small>Alfabet 26 huruf</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="autokey">
                     <label for="autokey">
                         <div class="cipher-icon">A</div>
-                        <div>
-                            <strong>Auto-Key Vigenere</strong>
-                            <small>Alfabet 26 huruf</small>
-                        </div>
+                        <div><strong>Auto-Key Vigenere</strong><small>Alfabet 26 huruf</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="extended">
                     <label for="extended">
                         <div class="cipher-icon">E</div>
-                        <div>
-                            <strong>Extended Vigenere</strong>
-                            <small>256 karakter ASCII</small>
-                        </div>
+                        <div><strong>Extended Vigenere</strong><small>256 karakter ASCII</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="playfair">
                     <label for="playfair">
                         <div class="cipher-icon">P</div>
-                        <div>
-                            <strong>Playfair Cipher</strong>
-                            <small>Alfabet 26 huruf</small>
-                        </div>
+                        <div><strong>Playfair Cipher</strong><small>Alfabet 26 huruf</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="affine">
                     <label for="affine">
                         <div class="cipher-icon">Af</div>
-                        <div>
-                            <strong>Affine Cipher</strong>
-                            <small>Alfabet 26 huruf</small>
-                        </div>
+                        <div><strong>Affine Cipher</strong><small>Alfabet 26 huruf</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="hill">
                     <label for="hill">
                         <div class="cipher-icon">H</div>
-                        <div>
-                            <strong>Hill Cipher</strong>
-                            <small>Alfabet 26 huruf</small>
-                        </div>
+                        <div><strong>Hill Cipher</strong><small>Alfabet 26 huruf</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="super">
                     <label for="super">
                         <div class="cipher-icon">S</div>
-                        <div>
-                            <strong>Super Enkripsi</strong>
-                            <small>Extended Vigenere + Transposisi Kolom</small>
-                        </div>
+                        <div><strong>Super Enkripsi</strong><small>Extended Vigenere + Transposisi Kolom</small></div>
                     </label>
                 </div>
-
                 <div class="cipher-option">
                     <input type="radio" name="cipher" id="enigma">
                     <label for="enigma">
                         <div class="cipher-icon">★</div>
-                        <div>
-                            <strong>Enigma Cipher</strong>
-                            <small>Bonus</small>
-                        </div>
+                        <div><strong>Enigma Cipher</strong><small>Bonus</small></div>
                     </label>
                 </div>
-
             </div>
         </section>
 
-
-        <!-- ================= AREA KERJA ================= -->
+        <!-- AREA KERJA -->
         <section class="workspace">
 
-            <!-- INPUT -->
             <div class="card">
                 <div class="section-title">
                     <div class="number">02</div>
@@ -162,9 +117,8 @@
                 </div>
 
                 <label class="field-label">Pesan</label>
-                <textarea class="message-input"
-                          placeholder="Ketik atau tempel pesan di sini..."
-                          id="messageInput"></textarea>
+                <textarea class="message-input" placeholder="Ketik atau tempel pesan di sini..."
+                    id="messageInput"></textarea>
 
                 <label class="field-label">Atau unggah file</label>
                 <div class="upload-box" id="uploadBox">
@@ -176,23 +130,18 @@
                     </div>
                 </div>
 
-                <!-- ================= KUNCI: DINAMIS ================= -->
+                <!-- KUNCI DINAMIS -->
                 <label class="field-label" id="keyLabel">Kunci</label>
 
-                <!-- Default: teks -->
                 <div class="key-input" id="keyText">
-                    <input type="text"
-                           placeholder="Masukkan kunci..."
-                           id="keyInput">
+                    <input type="text" placeholder="Masukkan kunci..." id="keyInput">
                 </div>
 
-                <!-- Affine: 2 input -->
                 <div class="key-affine" id="keyAffine" style="display:none;">
                     <input type="number" placeholder="a" id="affineA">
                     <input type="number" placeholder="b" id="affineB">
                 </div>
 
-                <!-- Hill: matriks 2x2 -->
                 <div class="key-hill" id="keyHill" style="display:none;">
                     <div class="hill-label">Matriks Kunci (2×2)</div>
                     <div class="hill-grid">
@@ -203,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Super: 2 input -->
                 <div class="key-super" id="keySuper" style="display:none;">
                     <div class="super-input">
                         <label>Key Extended Vigenere</label>
@@ -215,7 +163,6 @@
                     </div>
                 </div>
 
-                <!-- Enigma: dropdown + input -->
                 <div class="key-enigma" id="keyEnigma" style="display:none;">
                     <div class="enigma-row">
                         <label>Rotor Kiri</label>
@@ -251,24 +198,16 @@
                     </div>
                 </div>
 
-                <!-- TOMBOL -->
                 <div class="action-buttons">
-                    <button class="btn encrypt-btn"
-                            id="btnEncrypt"
-                            onclick="showDemo('encrypt')">
+                    <button class="btn encrypt-btn" id="btnEncrypt" onclick="showDemo('encrypt')">
                         <span>🔒</span> Enkripsi
                     </button>
-
-                    <button class="btn decrypt-btn"
-                            id="btnDecrypt"
-                            onclick="showDemo('decrypt')">
+                    <button class="btn decrypt-btn" id="btnDecrypt" onclick="showDemo('decrypt')">
                         <span>🔓</span> Dekripsi
                     </button>
                 </div>
             </div>
 
-
-            <!-- HASIL -->
             <div class="card result-card">
                 <div class="section-title">
                     <div class="number">03</div>
@@ -279,19 +218,13 @@
                 </div>
 
                 <div class="result-tabs">
-                    <button class="tab active"
-                            id="tabText"
-                            onclick="changeTab('text', this)">Teks</button>
-                    <button class="tab"
-                            id="tabBase64"
-                            onclick="changeTab('base64', this)">Base64</button>
+                    <button class="tab active" id="tabText" onclick="changeTab('text', this)">Teks</button>
+                    <button class="tab" id="tabBase64" onclick="changeTab('base64', this)">Base64</button>
                 </div>
 
                 <div class="output-wrapper">
-                    <textarea id="outputText"
-                              class="output-area"
-                              readonly
-                              placeholder="Hasil akan ditampilkan di sini..."></textarea>
+                    <textarea id="outputText" class="output-area" readonly
+                        placeholder="Hasil akan ditampilkan di sini..."></textarea>
                     <div class="output-info">
                         <span id="outputStatus">Belum ada hasil</span>
                         <span id="outputCount">0 karakter</span>
@@ -304,8 +237,6 @@
             </div>
         </section>
 
-
-        <!-- INFORMASI -->
         <section class="info-box">
             <div class="info-icon">i</div>
             <div>
@@ -318,260 +249,348 @@
             </div>
         </section>
 
-
         <footer>
-            <div>
-                <strong>CryptaLab</strong>
-                <span> • </span> Proyek Kriptografi
-            </div>
+            <div><strong>CryptaLab</strong><span> • </span> Proyek Kriptografi</div>
             <div>The Cipherlings</div>
         </footer>
 
     </main>
 
-
-    <!-- ================= JAVASCRIPT ================= -->
     <script>
-    let lastResult = "";
-    let currentTab = "text";
-    let uploadedFileName = "";
+        let lastResult = "";
+        let currentTab = "text";
+        let uploadedFileName = "";
+        let uploadedFileExt = "";
+        let lastMode = "";
 
-    const keyFields = {
-        keyText:   document.getElementById("keyText"),
-        keyAffine: document.getElementById("keyAffine"),
-        keyHill:   document.getElementById("keyHill"),
-        keySuper:  document.getElementById("keySuper"),
-        keyEnigma: document.getElementById("keyEnigma"),
-    };
+        // Simpan byte asli file (kalau upload file)
+        let uploadedFileBytes = null;
+        let isFromFile = false;
 
-    const infoText = document.getElementById("infoText");
-    const keyLabel = document.getElementById("keyLabel");
+        const keyFields = {
+            keyText: document.getElementById("keyText"),
+            keyAffine: document.getElementById("keyAffine"),
+            keyHill: document.getElementById("keyHill"),
+            keySuper: document.getElementById("keySuper"),
+            keyEnigma: document.getElementById("keyEnigma"),
+        };
 
-    const INFO_MAP = {
-        vigenere: "Key berupa teks alfabet. Contoh: LEMON",
-        autokey:  "Key berupa teks alfabet. Contoh: LEMON",
-        extended: "Key berupa teks bebas. Bekerja pada 256 karakter ASCII.",
-        playfair: "Key berupa teks alfabet (J digabung ke I). Contoh: KUNCI",
-        affine:   "Nilai a harus relatif prima dengan 26 (1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25).",
-        hill:     "Determinan matriks harus relatif prima dengan 26.",
-        super:    "Tahap 1: Extended Vigenere. Tahap 2: Transposisi Kolom.",
-        enigma:   "Default: rotor I-II-III, posisi AAA, plugboard kosong.",
-    };
+        const infoText = document.getElementById("infoText");
+        const keyLabel = document.getElementById("keyLabel");
 
-    function showKeyFields(algorithm) {
-        Object.values(keyFields).forEach(el => el.style.display = "none");
+        const INFO_MAP = {
+            vigenere: "Key berupa teks alfabet. Contoh: LEMON",
+            autokey: "Key berupa teks alfabet. Contoh: LEMON",
+            extended: "Key berupa teks bebas. Bekerja pada 256 karakter ASCII. Mendukung file biner.",
+            playfair: "Key berupa teks alfabet (J digabung ke I). Contoh: KUNCI",
+            affine: "Nilai a harus relatif prima dengan 26 (1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25).",
+            hill: "Determinan matriks harus relatif prima dengan 26.",
+            super: "Tahap 1: Extended Vigenere. Tahap 2: Transposisi Kolom. Mendukung file biner.",
+            enigma: "Default: rotor I-II-III, posisi AAA, plugboard kosong.",
+        };
 
-        if (algorithm === "affine") {
-            keyFields.keyAffine.style.display = "flex";
-            keyLabel.innerText = "Parameter (a, b)";
-        } else if (algorithm === "hill") {
-            keyFields.keyHill.style.display = "block";
-            keyLabel.innerText = "Matriks Kunci";
-        } else if (algorithm === "super") {
-            keyFields.keySuper.style.display = "block";
-            keyLabel.innerText = "Kunci";
-        } else if (algorithm === "enigma") {
-            keyFields.keyEnigma.style.display = "block";
-            keyLabel.innerText = "Konfigurasi Enigma";
-        } else {
-            keyFields.keyText.style.display = "flex";
-            keyLabel.innerText = "Kunci";
-        }
+        // Cipher yang mendukung file biner
+        const BINARY_CIPHERS = ["extended", "super"];
 
-        infoText.innerText = INFO_MAP[algorithm] || INFO_MAP.vigenere;
-    }
+        function showKeyFields(algorithm) {
+            Object.values(keyFields).forEach(el => el.style.display = "none");
 
-    function buildKey(algorithm) {
-        if (algorithm === "affine") {
-            const a = document.getElementById("affineA").value || "0";
-            const b = document.getElementById("affineB").value || "0";
-            return `${a},${b}`;
-        }
-        if (algorithm === "hill") {
-            return [
-                document.getElementById("hill11").value || "0",
-                document.getElementById("hill12").value || "0",
-                document.getElementById("hill21").value || "0",
-                document.getElementById("hill22").value || "0",
-            ].join(",");
-        }
-        if (algorithm === "super") {
-            const ke = document.getElementById("superKE").value;
-            const kt = document.getElementById("superKT").value;
-            return `${ke},${kt}`;
-        }
-        if (algorithm === "enigma") {
-            return [
-                document.getElementById("rotor1").value,
-                document.getElementById("rotor2").value,
-                document.getElementById("rotor3").value,
-                document.getElementById("enigmaPos").value || "AAA",
-                document.getElementById("enigmaPlug").value,
-            ].join(",");
-        }
-        return document.getElementById("keyInput").value;
-    }
-
-    function changeTab(type, button) {
-        document.querySelectorAll(".tab").forEach(tab =>
-            tab.classList.remove("active")
-        );
-        button.classList.add("active");
-
-        currentTab = type;
-
-        const output = document.getElementById("outputText");
-        const count = document.getElementById("outputCount");
-
-        if (!lastResult) {
-            output.value = "";
-            count.innerText = "0 karakter";
-            return;
-        }
-
-        if (type === "base64") {
-            // Encode ke Base64 (unicode-safe)
-            const b64 = btoa(unescape(encodeURIComponent(lastResult)));
-            output.value = b64;
-            count.innerText = b64.length + " karakter";
-        } else {
-            output.value = lastResult;
-            count.innerText = lastResult.length + " karakter";
-        }
-    }
-
-    async function showDemo(action) {
-        const output = document.getElementById("outputText");
-        const status = document.getElementById("outputStatus");
-        const count  = document.getElementById("outputCount");
-        const input  = document.getElementById("messageInput").value;
-        const btnE   = document.getElementById("btnEncrypt");
-        const btnD   = document.getElementById("btnDecrypt");
-
-        const algorithm = document.querySelector(
-            'input[name="cipher"]:checked'
-        )?.id;
-
-        if (input.trim() === "") {
-            output.value = "";
-            status.innerText = "Silakan masukkan pesan terlebih dahulu.";
-            status.className = "";
-            count.innerText = "0 karakter";
-            return;
-        }
-
-        const key = buildKey(algorithm);
-
-        status.innerText = "Memproses...";
-        status.className = "";
-        btnE.disabled = true;
-        btnD.disabled = true;
-
-        try {
-            const response = await fetch("/process", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    algorithm: algorithm,
-                    mode: action,
-                    text: input,
-                    key: key
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.error) {
-                output.value = "";
-                status.innerText = "✗ Error: " + data.error;
-                status.className = "status-error";
-                count.innerText = "0 karakter";
-                lastResult = "";
+            if (algorithm === "affine") {
+                keyFields.keyAffine.style.display = "flex";
+                keyLabel.innerText = "Parameter (a, b)";
+            } else if (algorithm === "hill") {
+                keyFields.keyHill.style.display = "block";
+                keyLabel.innerText = "Matriks Kunci";
+            } else if (algorithm === "super") {
+                keyFields.keySuper.style.display = "block";
+                keyLabel.innerText = "Kunci";
+            } else if (algorithm === "enigma") {
+                keyFields.keyEnigma.style.display = "block";
+                keyLabel.innerText = "Konfigurasi Enigma";
             } else {
-                lastResult = data.result;
-                status.innerText = (action === "encrypt")
-                    ? "✓ Enkripsi berhasil"
-                    : "✓ Dekripsi berhasil";
-                status.className = "status-success";
+                keyFields.keyText.style.display = "flex";
+                keyLabel.innerText = "Kunci";
+            }
 
-                // Apply tab yang sedang aktif
-                if (currentTab === "base64") {
-                    const b64 = btoa(unescape(encodeURIComponent(lastResult)));
-                    output.value = b64;
-                    count.innerText = b64.length + " karakter";
+            infoText.innerText = INFO_MAP[algorithm] || INFO_MAP.vigenere;
+        }
+
+        function buildKey(algorithm) {
+            if (algorithm === "affine") {
+                const a = document.getElementById("affineA").value || "0";
+                const b = document.getElementById("affineB").value || "0";
+                return `${a},${b}`;
+            }
+            if (algorithm === "hill") {
+                return [
+                    document.getElementById("hill11").value || "0",
+                    document.getElementById("hill12").value || "0",
+                    document.getElementById("hill21").value || "0",
+                    document.getElementById("hill22").value || "0",
+                ].join(",");
+            }
+            if (algorithm === "super") {
+                const ke = document.getElementById("superKE").value;
+                const kt = document.getElementById("superKT").value;
+                return `${ke},${kt}`;
+            }
+            if (algorithm === "enigma") {
+                return [
+                    document.getElementById("rotor1").value,
+                    document.getElementById("rotor2").value,
+                    document.getElementById("rotor3").value,
+                    document.getElementById("enigmaPos").value || "AAA",
+                    document.getElementById("enigmaPlug").value,
+                ].join(",");
+            }
+            return document.getElementById("keyInput").value;
+        }
+
+        // =====================
+        // BASE64 HELPERS
+        // =====================
+        function bytesToBase64(bytes) {
+            let binary = "";
+            for (let i = 0; i < bytes.length; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        }
+
+        function base64ToBytes(b64) {
+            const binary = atob(b64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes;
+        }
+
+        function changeTab(type, button) {
+            document.querySelectorAll(".tab").forEach(tab =>
+                tab.classList.remove("active")
+            );
+            button.classList.add("active");
+            currentTab = type;
+
+            const output = document.getElementById("outputText");
+            const count = document.getElementById("outputCount");
+
+            if (!lastResult) {
+                output.value = "";
+                count.innerText = "0 karakter";
+                return;
+            }
+
+            if (type === "base64") {
+                // lastResult sudah berupa string Base64 untuk file biner
+                // atau teks biasa — encode ke Base64
+                const b64 = btoa(unescape(encodeURIComponent(lastResult)));
+                output.value = b64;
+                count.innerText = b64.length + " karakter";
+            } else {
+                output.value = lastResult;
+                count.innerText = lastResult.length + " karakter";
+            }
+        }
+
+        async function showDemo(action) {
+            const output = document.getElementById("outputText");
+            const status = document.getElementById("outputStatus");
+            const count = document.getElementById("outputCount");
+            const input = document.getElementById("messageInput").value;
+            const btnE = document.getElementById("btnEncrypt");
+            const btnD = document.getElementById("btnDecrypt");
+
+            const algorithm = document.querySelector(
+                'input[name="cipher"]:checked'
+            )?.id;
+
+            lastMode = action;
+
+            if (input.trim() === "") {
+                output.value = "";
+                status.innerText = "Silakan masukkan pesan terlebih dahulu.";
+                status.className = "";
+                count.innerText = "0 karakter";
+                return;
+            }
+
+            const key = buildKey(algorithm);
+
+            status.innerText = "Memproses...";
+            status.className = "";
+            btnE.disabled = true;
+            btnD.disabled = true;
+
+            try {
+                const response = await fetch("/process", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        algorithm: algorithm,
+                        mode: action,
+                        text: input,
+                        key: key,
+                        isFile: isFromFile
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    output.value = "";
+                    status.innerText = "✗ Error: " + data.error;
+                    status.className = "status-error";
+                    count.innerText = "0 karakter";
+                    lastResult = "";
                 } else {
-                    output.value = lastResult;
-                    count.innerText = lastResult.length + " karakter";
+                    lastResult = data.result;
+                    status.innerText = (action === "encrypt")
+                        ? "✓ Enkripsi berhasil"
+                        : "✓ Dekripsi berhasil";
+                    status.className = "status-success";
+
+                    if (currentTab === "base64") {
+                        const b64 = btoa(unescape(encodeURIComponent(lastResult)));
+                        output.value = b64;
+                        count.innerText = b64.length + " karakter";
+                    } else {
+                        output.value = lastResult;
+                        count.innerText = lastResult.length + " karakter";
+                    }
+                }
+            } catch (err) {
+                status.innerText = "Gagal menghubungi server.";
+                status.className = "status-error";
+            } finally {
+                btnE.disabled = false;
+                btnD.disabled = false;
+            }
+        }
+
+        function downloadResult() {
+            const output = document.getElementById("outputText").value;
+            if (!output) {
+                alert("Tidak ada hasil yang dapat diunduh.");
+                return;
+            }
+
+            const algorithm = document.querySelector(
+                'input[name="cipher"]:checked'
+            )?.id;
+
+            let filename = "ciphertext.txt";
+            let blob;
+
+            // Kalau file biner & dari file & mode dekripsi → decode Base64
+            if (isFromFile && BINARY_CIPHERS.includes(algorithm) && lastMode === "decrypt") {
+                try {
+                    const bytes = base64ToBytes(output);
+                    blob = new Blob([bytes], { type: "application/octet-stream" });
+                    filename = uploadedFileName;   // nama asli
+                } catch (e) {
+                    // fallback
+                    blob = new Blob([output], { type: "application/octet-stream" });
+                }
+            } else if (isFromFile && BINARY_CIPHERS.includes(algorithm) && lastMode === "encrypt") {
+                // Enkripsi file biner → output Base64, simpan sebagai .dat
+                blob = new Blob([output], { type: "application/octet-stream" });
+                const base = uploadedFileName.replace(/\.[^/.]+$/, "");
+                filename = `${base}_encrypted.dat`;
+            } else {
+                // Cipher 26 huruf atau input teks
+                blob = new Blob([output], { type: "application/octet-stream" });
+
+                if (uploadedFileName) {
+                    if (lastMode === "decrypt") {
+                        filename = uploadedFileName;
+                    } else if (lastMode === "encrypt") {
+                        const base = uploadedFileName.replace(/\.[^/.]+$/, "");
+                        filename = `${base}_encrypted.dat`;
+                    } else {
+                        filename = uploadedFileName;
+                    }
                 }
             }
-        } catch (err) {
-            status.innerText = "Gagal menghubungi server.";
-            status.className = "status-error";
-        } finally {
-            btnE.disabled = false;
-            btnD.disabled = false;
-        }
-    }
 
-    function downloadResult() {
-        const output = document.getElementById("outputText").value;
-        if (!output) {
-            alert("Tidak ada hasil yang dapat diunduh.");
-            return;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
-        let filename = "ciphertext.txt";
-        if (uploadedFileName) {
-            const base = uploadedFileName.replace(/\.[^/.]+$/, "");
-            filename = `${base}_result.txt`;
-        }
+        // =====================
+        // UPLOAD FILE — BACA SEBAGAI BYTE
+        // =====================
+        document.getElementById("fileInput").addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        const blob = new Blob([output], { type: "application/octet-stream" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
+            uploadedFileName = file.name;
 
-    // =====================
-    // UPLOAD FILE
-    // =====================
-    document.getElementById("fileInput").addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (!file) return;
+            const dotIdx = file.name.lastIndexOf(".");
+            uploadedFileExt = dotIdx !== -1 ? file.name.slice(dotIdx) : "";
 
-        uploadedFileName = file.name;
+            // Deteksi apakah file teks atau biner
+            const textExts = [".txt", ".csv", ".json", ".html", ".xml", ".md", ".log", ".py", ".js", ".css"];
+            const isText = textExts.includes(uploadedFileExt.toLowerCase());
 
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-            document.getElementById("messageInput").value = evt.target.result;
-            document.getElementById("uploadTitle").innerText = "📄 " + file.name;
-            document.getElementById("uploadSubtitle").innerText =
-                (file.size / 1024).toFixed(1) + " KB";
-            document.getElementById("uploadBox").classList.add("has-file");
-        };
-        reader.readAsText(file);
-    });
+            const algorithm = document.querySelector(
+                'input[name="cipher"]:checked'
+            )?.id;
 
-    // =====================
-    // PEMILIHAN ALGORITMA
-    // =====================
-    document.querySelectorAll('input[name="cipher"]').forEach(input => {
-        input.addEventListener("change", function () {
-            document.querySelectorAll(".cipher-option").forEach(opt =>
-                opt.classList.remove("active")
-            );
-            this.closest(".cipher-option").classList.add("active");
+            // Kalau cipher biner (extended/super) ATAU file biner → baca sebagai byte
+            if (BINARY_CIPHERS.includes(algorithm) || !isText) {
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    const bytes = new Uint8Array(evt.target.result);
+                    uploadedFileBytes = bytes;
 
-            showKeyFields(this.id);
+                    const b64 = bytesToBase64(bytes);
+                    document.getElementById("messageInput").value = b64;
+
+                    document.getElementById("uploadTitle").innerText = "📄 " + file.name;
+                    document.getElementById("uploadSubtitle").innerText =
+                        (file.size / 1024).toFixed(1) + " KB (biner → Base64)";
+                    document.getElementById("uploadBox").classList.add("has-file");
+                    isFromFile = true;
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                // Cipher 26 huruf + file teks → baca sebagai teks
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    document.getElementById("messageInput").value = evt.target.result;
+                    document.getElementById("uploadTitle").innerText = "📄 " + file.name;
+                    document.getElementById("uploadSubtitle").innerText =
+                        (file.size / 1024).toFixed(1) + " KB";
+                    document.getElementById("uploadBox").classList.add("has-file");
+                    isFromFile = true;
+                    uploadedFileBytes = null;
+                };
+                reader.readAsText(file);
+            }
         });
-    });
 
-    // Inisialisasi awal
-    showKeyFields("vigenere");
-</script>
+        // =====================
+        // PEMILIHAN ALGORITMA
+        // =====================
+        document.querySelectorAll('input[name="cipher"]').forEach(input => {
+            input.addEventListener("change", function () {
+                document.querySelectorAll(".cipher-option").forEach(opt =>
+                    opt.classList.remove("active")
+                );
+                this.closest(".cipher-option").classList.add("active");
+
+                showKeyFields(this.id);
+            });
+        });
+
+        showKeyFields("vigenere");
+    </script>
 
 </body>
 

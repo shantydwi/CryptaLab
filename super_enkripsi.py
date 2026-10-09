@@ -3,6 +3,8 @@
 from extended_vigenere_cipher import (
     encrypt_extended_vigenere,
     decrypt_extended_vigenere,
+    encrypt_extended_vigenere_bytes,
+    decrypt_extended_vigenere_bytes,
 )
 
 
@@ -64,7 +66,7 @@ def transposisi_kolom_decrypt(ciphertext_bytes, key):
 
 
 # ==============================
-# SUPER ENKRIPSI
+# SUPER ENKRIPSI (versi string — untuk input teks)
 # ==============================
 
 def super_enkripsi(plaintext, key_extended, key_transposisi):
@@ -88,6 +90,42 @@ def super_dekripsi(ciphertext, key_extended, key_transposisi):
     # Tahap 2: Extended Vigenere (kebalikan)
     hasil_vigenere = decrypt_extended_vigenere(
         hasil_transposisi, key_extended
+    )
+
+    return hasil_transposisi, hasil_vigenere
+
+
+# ==============================
+# SUPER ENKRIPSI (versi byte — untuk file biner)
+# ==============================
+
+def super_enkripsi_bytes(plaintext_bytes, key_extended, key_transposisi):
+    key_ext = key_extended.encode("utf-8")
+
+    # Tahap 1: Extended Vigenere (byte)
+    hasil_vigenere = encrypt_extended_vigenere_bytes(
+        plaintext_bytes, key_ext
+    )
+
+    # Tahap 2: Transposisi Kolom
+    hasil_transposisi = transposisi_kolom_encrypt(
+        hasil_vigenere, key_transposisi
+    )
+
+    return hasil_vigenere, hasil_transposisi
+
+
+def super_dekripsi_bytes(ciphertext_bytes, key_extended, key_transposisi):
+    key_ext = key_extended.encode("utf-8")
+
+    # Tahap 1: Transposisi Kolom (kebalikan)
+    hasil_transposisi = transposisi_kolom_decrypt(
+        ciphertext_bytes, key_transposisi
+    )
+
+    # Tahap 2: Extended Vigenere (kebalikan)
+    hasil_vigenere = decrypt_extended_vigenere_bytes(
+        hasil_transposisi, key_ext
     )
 
     return hasil_transposisi, hasil_vigenere
