@@ -564,7 +564,18 @@
             // ENKRIPSI dari file → simpan sebagai .dat
             // =====================================================
             else if (lastMode === "encrypt" && isFromFile) {
-                blob = new Blob([output], { type: "application/octet-stream" });
+                const isBinaryCipher = BINARY_CIPHERS.includes(algorithm)
+
+                if (isBinaryCipher){
+                    const bytes = base64ToBytes(lastResult);
+                    blob = new Blob([bytes], {
+                        type: "application/octet-stream"
+                });
+                } else {
+                    blob = new Blob([output], {
+                        type: "application/octet-stream"
+                    })
+                }
                 const base = (uploadedFileName || "ciphertext").replace(/\.[^/.]+$/, "");
                 filename = `${base}_encrypted.dat`;
             }
