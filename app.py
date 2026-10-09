@@ -29,9 +29,6 @@ app = Flask(__name__)
 
 # =====================================================
 # HEADER UNTUK CIPHER 26 HURUF
-# Format: FILENAME||<nama_file>||END||<isi_plaintext>
-# Aman karena pakai huruf saja (|| akan difilter jadi kosong
-# tapi penanda FILENAME/END tetap terbaca sebagai huruf)
 # =====================================================
 
 HEADER_START = "FILENAMESTART"
@@ -39,27 +36,16 @@ HEADER_END = "FILENAMEEND"
 
 
 def wrap_text_header(text, filename):
-    """
-    Bungkus plaintext dengan header nama file.
-    Format: FILENAMESTART<nama_file>FILENAMEEND<isi_teks>
-    """
-    # Hapus titik dari nama file (karena cipher 26 huruf buang titik)
-    # Titik akan direkonstruksi di frontend
     safe_name = filename.replace(".", "DOT")
     return HEADER_START + safe_name + HEADER_END + text
 
 
 def unwrap_text_header(decrypted_text):
-    """
-    Baca header nama file dari hasil dekripsi cipher 26 huruf.
-    Return: (filename, raw_text) atau (None, decrypted_text) jika tidak ada header.
-    """
     if HEADER_START in decrypted_text and HEADER_END in decrypted_text:
         start_idx = decrypted_text.index(HEADER_START) + len(HEADER_START)
         end_idx = decrypted_text.index(HEADER_END)
 
         safe_name = decrypted_text[start_idx:end_idx]
-        # Rekonstruksi titik
         original_filename = safe_name.replace("DOT", ".")
 
         raw_text = decrypted_text[end_idx + len(HEADER_END):]
@@ -148,7 +134,7 @@ def process():
                     })
 
         # =====================================================
-        # FILE TEKS (cipher 26 huruf) — header dibungkus FILENAMESTART...END
+        # FILE TEKS (cipher 26 huruf)
         # =====================================================
         elif is_file and algorithm not in BINARY_CIPHERS:
 
@@ -307,8 +293,8 @@ def process():
                     result = base64.b64encode(cb).decode("ascii")
                 else:
                     cb = base64.b64decode(text)
+                    # ⬇️ HAPUS .decode() — karena super_dekripsi sudah return string
                     _, result = super_dekripsi(cb, ke, kt)
-                    result = result.decode("utf-8", errors="replace")
 
             elif algorithm == "enigma":
                 parts = key.split(",", 4)

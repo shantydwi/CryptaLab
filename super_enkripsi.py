@@ -66,12 +66,20 @@ def transposisi_kolom_decrypt(ciphertext_bytes, key):
 
 
 # ==============================
-# SUPER ENKRIPSI (versi string — untuk input teks)
+# SUPER ENKRIPSI (versi string — untuk input teks manual)
 # ==============================
 
 def super_enkripsi(plaintext, key_extended, key_transposisi):
-    # Tahap 1: Extended Vigenere
-    hasil_vigenere = encrypt_extended_vigenere(plaintext, key_extended)
+    # Simpan panjang plaintext asli di 4 byte pertama
+    plaintext_bytes = plaintext.encode("utf-8")
+    panjang = len(plaintext_bytes)
+    header = panjang.to_bytes(4, "big")
+    payload = header + plaintext_bytes
+
+    key_ext_bytes = key_extended.encode("utf-8")
+
+    # Tahap 1: Extended Vigenere (byte)
+    hasil_vigenere = encrypt_extended_vigenere_bytes(payload, key_ext_bytes)
 
     # Tahap 2: Transposisi Kolom
     hasil_transposisi = transposisi_kolom_encrypt(
@@ -82,17 +90,27 @@ def super_enkripsi(plaintext, key_extended, key_transposisi):
 
 
 def super_dekripsi(ciphertext, key_extended, key_transposisi):
+    # ciphertext bisa bytes atau str
+    if isinstance(ciphertext, str):
+        ciphertext = ciphertext.encode("latin-1")
+
     # Tahap 1: Transposisi Kolom (kebalikan)
     hasil_transposisi = transposisi_kolom_decrypt(
         ciphertext, key_transposisi
     )
 
+    key_ext_bytes = key_extended.encode("utf-8")
+
     # Tahap 2: Extended Vigenere (kebalikan)
-    hasil_vigenere = decrypt_extended_vigenere(
-        hasil_transposisi, key_extended
+    hasil_vigenere = decrypt_extended_vigenere_bytes(
+        hasil_transposisi, key_ext_bytes
     )
 
-    return hasil_transposisi, hasil_vigenere
+    # Baca panjang asli dari 4 byte pertama
+    panjang_asli = int.from_bytes(hasil_vigenere[:4], "big")
+    plaintext_bytes = hasil_vigenere[4:4 + panjang_asli]
+
+    return hasil_transposisi, plaintext_bytes.decode("utf-8")
 
 
 # ==============================
@@ -102,10 +120,13 @@ def super_dekripsi(ciphertext, key_extended, key_transposisi):
 def super_enkripsi_bytes(plaintext_bytes, key_extended, key_transposisi):
     key_ext = key_extended.encode("utf-8")
 
+    # Simpan panjang plaintext di 4 byte pertama
+    panjang = len(plaintext_bytes)
+    header = panjang.to_bytes(4, "big")
+    payload = header + plaintext_bytes
+
     # Tahap 1: Extended Vigenere (byte)
-    hasil_vigenere = encrypt_extended_vigenere_bytes(
-        plaintext_bytes, key_ext
-    )
+    hasil_vigenere = encrypt_extended_vigenere_bytes(payload, key_ext)
 
     # Tahap 2: Transposisi Kolom
     hasil_transposisi = transposisi_kolom_encrypt(
@@ -128,4 +149,8 @@ def super_dekripsi_bytes(ciphertext_bytes, key_extended, key_transposisi):
         hasil_transposisi, key_ext
     )
 
-    return hasil_transposisi, hasil_vigenere
+    # Baca panjang asli dari 4 byte pertama
+    panjang_asli = int.from_bytes(hasil_vigenere[:4], "big")
+    plaintext_bytes = hasil_vigenere[4:4 + panjang_asli]
+
+    return hasil_transposisi, plaintext_bytes
