@@ -35,9 +35,56 @@ HEADER_START = "FILENAMESTART"
 HEADER_END = "FILENAMEEND"
 
 
+def encode_filename(filename):
+    """
+    Encode nama file agar tahan proses .upper() di cipher 26 huruf.
+    Huruf besar didahului BIG, huruf kecil SMALL, titik jadi DOT.
+
+    Contoh: "Kripto.txt" -> "BIGKSMALLrSMALLiSMALLpSMALLtSMALLoDOTSMALLtSMALLxSMALLt"
+    """
+    result = []
+    for ch in filename:
+        if ch == ".":
+            result.append("DOT")
+        elif ch.isupper():
+            result.append("BIG" + ch)              # huruf besar
+        elif ch.islower():
+            result.append("SMALL" + ch.upper())    # huruf kecil (di-upper biar aman)
+        else:
+            result.append("ASIS" + ch)             # angka/simbol
+    return "".join(result)
+
+
+def decode_filename(encoded):
+    """
+    Kembalikan nama file dari format encode_filename().
+    """
+    result = []
+    i = 0
+    while i < len(encoded):
+        if encoded[i:i + 3] == "BIG":
+            if i + 3 < len(encoded):
+                result.append(encoded[i + 3].upper())
+            i += 4
+        elif encoded[i:i + 5] == "SMALL":
+            if i + 5 < len(encoded):
+                result.append(encoded[i + 5].lower())
+            i += 6
+        elif encoded[i:i + 3] == "DOT":
+            result.append(".")
+            i += 3
+        elif encoded[i:i + 4] == "ASIS":
+            if i + 4 < len(encoded):
+                result.append(encoded[i + 4])
+            i += 5
+        else:
+            i += 1
+    return "".join(result)
+
+
 def wrap_text_header(text, filename):
-    safe_name = filename.replace(".", "DOT")
-    return HEADER_START + safe_name + HEADER_END + text
+    encoded_name = encode_filename(filename)
+    return HEADER_START + encoded_name + HEADER_END + text
 
 
 def unwrap_text_header(decrypted_text):
@@ -45,8 +92,8 @@ def unwrap_text_header(decrypted_text):
         start_idx = decrypted_text.index(HEADER_START) + len(HEADER_START)
         end_idx = decrypted_text.index(HEADER_END)
 
-        safe_name = decrypted_text[start_idx:end_idx]
-        original_filename = safe_name.replace("DOT", ".")
+        encoded_name = decrypted_text[start_idx:end_idx]
+        original_filename = decode_filename(encoded_name)
 
         raw_text = decrypted_text[end_idx + len(HEADER_END):]
         return original_filename, raw_text
@@ -137,6 +184,11 @@ def process():
         # FILE TEKS (cipher 26 huruf)
         # =====================================================
         elif is_file and algorithm not in BINARY_CIPHERS:
+
+            # Decode base64 dulu (frontend kirim base64 dari byte file .dat)
+            if mode == "decrypt":
+                raw_bytes = base64.b64decode(text)
+                text = raw_bytes.decode("utf-8", errors="replace")
 
             if algorithm == "vigenere":
                 if mode == "encrypt":
@@ -293,7 +345,6 @@ def process():
                     result = base64.b64encode(cb).decode("ascii")
                 else:
                     cb = base64.b64decode(text)
-                    # ⬇️ HAPUS .decode() — karena super_dekripsi sudah return string
                     _, result = super_dekripsi(cb, ke, kt)
 
             elif algorithm == "enigma":
